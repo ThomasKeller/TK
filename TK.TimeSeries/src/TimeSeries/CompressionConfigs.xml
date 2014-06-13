@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CompressionConditionConfigs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="TimeSeries">
+  <Configs>
+    
+    <CompressionConditionConfig>
+      <TagName>Tag1</TagName>
+      <ValueDeadBandPercent>0.12345</ValueDeadBandPercent>
+      <TimeDeadBand Hours="0" Minutes="1" Seconds="2" />
+      <RewriteValueAfter Hours="1" Minutes="2" Seconds="3" />
+    </CompressionConditionConfig>
+    
+    <CompressionConditionConfig>
+      <TagName>Tag2</TagName>
+      <ValueDeadBandPercent>0.12345</ValueDeadBandPercent>
+      <TimeDeadBand Hours="0" Minutes="1" Seconds="2" />
+      <RewriteValueAfter Hours="1" Minutes="2" Seconds="3" />
+    </CompressionConditionConfig>
+  
+  </Configs>
+</CompressionConditionConfigs>
