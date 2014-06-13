@@ -1,0 +1,8 @@
+# git ignore file
+*.pdb
+*.suo
+*.vshost.*
+/**/bin/**/*
+/**/obj/**/*
+/**/packages/**/*
+*.nupkg
