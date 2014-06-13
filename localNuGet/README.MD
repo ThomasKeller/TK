@@ -1,0 +1,1 @@
+This is a placeholder folder that will store all local NUGET pacakges comming from the different projects.
