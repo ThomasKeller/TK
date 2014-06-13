@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Plugins>
+  <Plugin Name="KostalPlugin">
+    <Paramter Name="URL">http://192.168.111.34</Paramter>
+    <Paramter Name="User">pvserver</Paramter>
+    <Paramter Name="Password">geheim1</Paramter>
+  </Plugin>
+</Plugins>
