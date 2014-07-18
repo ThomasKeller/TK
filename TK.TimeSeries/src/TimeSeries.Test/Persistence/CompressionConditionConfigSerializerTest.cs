@@ -36,7 +36,7 @@ namespace TK.TimeSeries.Test.Persistence
                 MeasuredValueName = "Test",
                 RewriteValueAfter = tsc1,
                 TimeDeadBand = tsc2,
-                ValueDeadBandPercent = 0.12345
+                ValueDeadBandDelta = 0.12345
             };
 
             CompressionConditionConfigs configs = new CompressionConditionConfigs();
@@ -63,7 +63,51 @@ namespace TK.TimeSeries.Test.Persistence
                 var config = manager.GetConfigFor("");
             }
 
-            CompressionConditionManager manager2 = CompressionConditionManager.LoadFromFile("CompressionConfigs.xml");
+
+            var configs10 = new CompressionConditionConfigs();
+
+            configs10.Items = new CompressionConditionConfig[] { 
+                new CompressionConditionConfig() {
+                    MeasuredValueName = "Tag1", 
+                    RewriteValueAfter = new TimeSpanConfig() {
+                        Hours = 1,
+                        Minutes = 0,
+                        Seconds = 0 
+                    },
+                    TimeDeadBand = new TimeSpanConfig () {
+                        Hours = 0,
+                        Minutes = 0,
+                        Seconds = 10 
+                    },
+                    ValueDeadBandDelta = 1.2
+                },
+                new CompressionConditionConfig() {
+                    MeasuredValueName = "Tag2", 
+                    RewriteValueAfter = new TimeSpanConfig() {
+                        Hours = 1,
+                        Minutes = 0,
+                        Seconds = 0 
+                    },
+                    TimeDeadBand = new TimeSpanConfig () {
+                        Hours = 0,
+                        Minutes = 0,
+                        Seconds = 10 
+                    },
+                    ValueDeadBandDelta = 1.2
+                }
+            };
+
+            //XmlSerializer configSerializer = new XmlSerializer(typeof(CompressionConditionConfigs), "TimeSeries");
+            using (TextWriter writer = new StreamWriter("Thomas.xml"))
+            {
+                configSerializer.Serialize(writer, configs10);
+                writer.Close();
+            }
+
+
+
+
+            CompressionConditionManager manager2 = CompressionConditionManager.LoadFromFile("Thomas.xml");
         }
     }
 }

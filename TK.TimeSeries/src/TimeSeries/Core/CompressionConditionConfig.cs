@@ -10,7 +10,11 @@ namespace TK.TimeSeries.Core
         [XmlElement(ElementName = "TagName")]
         public string MeasuredValueName { get; set; }
 
+        [Obsolete("Property is obsolete. Please use ValueDeadBandDelta instead")]
+        [System.Xml.Serialization.XmlIgnore]
         public double ValueDeadBandPercent { get; set; }
+
+        public double ValueDeadBandDelta { get; set; }
         public TimeSpanConfig TimeDeadBand { get; set; }
         public TimeSpanConfig RewriteValueAfter { get; set; }
 
@@ -51,7 +55,7 @@ namespace TK.TimeSeries.Core
             return new CompressionCondition() {
                 RewriteValueAfter = GetRewriteValueAfter(),
                 TimeDeadBand = GetTimeDeadBand(),
-                ValueDeadBandPercent = this.ValueDeadBandPercent
+                ValueDeadBandDelta = this.ValueDeadBandDelta
             };
         }
     }

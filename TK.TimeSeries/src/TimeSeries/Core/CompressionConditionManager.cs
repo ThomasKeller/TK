@@ -68,7 +68,10 @@ namespace TK.TimeSeries.Core
                 XmlSerializer serializer = new XmlSerializer(typeof(CompressionConditionConfigs), "TimeSeries");
                 using (TextReader reader = new StreamReader(path)) {
                     CompressionConditionConfigs configs = (CompressionConditionConfigs)serializer.Deserialize(reader);
-                    manager.AddRange(configs.Items);
+                    if (configs.Items != null)
+                    {
+                        manager.AddRange(configs.Items);
+                    }
                 }
             }
             catch (Exception ex) {

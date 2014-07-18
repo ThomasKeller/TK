@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace TK.TimeSeries.Core
 {
@@ -8,6 +9,7 @@ namespace TK.TimeSeries.Core
     [Serializable]
     public class CompressionConditionConfigs
     {
+        [XmlElement(ElementName = "CompressionCondition")]
         public CompressionConditionConfig[] Items;
     }
 }

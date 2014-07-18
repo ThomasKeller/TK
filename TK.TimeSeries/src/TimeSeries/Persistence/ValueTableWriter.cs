@@ -80,8 +80,11 @@ namespace TK.TimeSeries.Persistence
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        private static int InsertIntoDatabase(MeasuredValue currentValue, TypeCode typeCode)
+        public static int InsertIntoDatabase(MeasuredValue currentValue, TypeCode typeCode)
         {
+            if (currentValue == null)
+                return 0;
+            
             string sql = "INSERT INTO {0} (Name, MeasuredDate, Value, Quality, Remark) " +
                           "values(@Name, @MeasuredDate, @Value, @Quality, @Remark);";
             sql = string.Format(sql, GetTableNameFor(typeCode));
@@ -113,7 +116,7 @@ namespace TK.TimeSeries.Persistence
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        private static IDictionary<string, DateTime> ReadLastMeasuredDatesFromLocalDB(TypeCode typeCode)
+        public static IDictionary<string, DateTime> ReadLastMeasuredDatesFromLocalDB(TypeCode typeCode)
         {
             var dic = new Dictionary<string, DateTime>();
             string sql = "SELECT MAX(MeasuredDate) AS MaxMeasuredDate, Name " +
@@ -133,7 +136,7 @@ namespace TK.TimeSeries.Persistence
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        private static IDictionary<string, DateTime> ReadLastMeasuredDatesFromDestDB(TypeCode typeCode)
+        public static IDictionary<string, DateTime> ReadLastMeasuredDatesFromDestDB(TypeCode typeCode)
         {
             var dic = new Dictionary<string, DateTime>();
             string sql = "SELECT MAX(MeasuredDate) AS MaxMeasuredDate, Name " +

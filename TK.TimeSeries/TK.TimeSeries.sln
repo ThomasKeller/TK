@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeries", "src\TimeSerie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeries.Test", "src\TimeSeries.Test\TimeSeries.Test.csproj", "{9D4EC9FE-8DEB-443D-9618-ABF113E6900C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataConverter", "DataConverter\DataConverter.csproj", "{4EAD567F-A182-4C63-A849-E46053E39233}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{9D4EC9FE-8DEB-443D-9618-ABF113E6900C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D4EC9FE-8DEB-443D-9618-ABF113E6900C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D4EC9FE-8DEB-443D-9618-ABF113E6900C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EAD567F-A182-4C63-A849-E46053E39233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EAD567F-A182-4C63-A849-E46053E39233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EAD567F-A182-4C63-A849-E46053E39233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EAD567F-A182-4C63-A849-E46053E39233}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

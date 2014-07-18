@@ -22,7 +22,7 @@ namespace TK.TimeSeries.Core
         private readonly static CompressionCondition _default = new CompressionCondition();
         private readonly static CompressionCondition _noCompression;
         private readonly StringBuilder _sb = new StringBuilder();
-        private double _valueDeadBandPercent = 0;
+        private double _valueDeadBandDelta = 0;
 
         #endregion Fields
 
@@ -30,16 +30,18 @@ namespace TK.TimeSeries.Core
 
         /// <summary>
         /// Define how much time must be gone before writing the next value.
+        /// Zero is interpreted as no deadband
         /// </summary>
         public TimeSpan TimeDeadBand { get; set; }
         /// <summary>
-        /// Define by how many percent the measured value must have changed
+        /// Define by how many delta the measured value must have changed
         /// before a new value is written.
+        /// Zero is interpreted as no deadband
         /// </summary>
-        public double ValueDeadBandPercent
+        public double ValueDeadBandDelta
         {
-            get { return _valueDeadBandPercent; }
-            set { _valueDeadBandPercent = value < 0 ? -value : value; }
+            get { return _valueDeadBandDelta; }
+            set { _valueDeadBandDelta = value < 0 ? -value : value; }
         }
         /// <summary>
         /// Define that after this time a new value is written
@@ -58,7 +60,7 @@ namespace TK.TimeSeries.Core
         {
             _noCompression = new CompressionCondition() {
                 RewriteValueAfter = new TimeSpan(),
-                ValueDeadBandPercent = 0,
+                ValueDeadBandDelta = 0,
                 TimeDeadBand = new TimeSpan()
             };
         }
@@ -74,7 +76,7 @@ namespace TK.TimeSeries.Core
         {
             TimeDeadBand = new TimeSpan(0, 0, 1);
             RewriteValueAfter = new TimeSpan(4, 0, 0);
-            ValueDeadBandPercent = 0.00001;
+            ValueDeadBandDelta = 0.0001;
         }
 
         #endregion Constructors
@@ -130,7 +132,7 @@ namespace TK.TimeSeries.Core
 
             // both must be true to write value
             if (CheckConditionTimeDeadBandIsMet(currentValue, previousValue)) {
-                if (CheckConditionValueDeadBandPercentIsMet(currentValue, previousValue)) {
+                if (CheckConditionValueDeadBandDeltaIsMet(currentValue, previousValue)) {
                     _logger.InfoFormat("write value: Current: {0} / Previous {1}", currentValue.ToString(), previousValue.ToString());
                     return true;
                 }
@@ -187,20 +189,20 @@ namespace TK.TimeSeries.Core
         }
 
         /// <summary>
-        /// Check if the condition "ValueDeadBandPercent" is met
-        /// Condition: The absolute difference in percent between
+        /// Check if the condition "ValueDeadBandDelta" is met
+        /// Condition: The absolute difference between
         /// the currrent and the previous value is bigger than
-        /// ValueDeadBandPercent
+        /// ValueDeadBandDelta
         /// </summary>
         /// <param name="currentValue">the current measured value</param>
         /// <param name="previousValue">the previous measured value </param>
         /// <returns></returns>
-        public bool CheckConditionValueDeadBandPercentIsMet(MeasuredValue currentValue, MeasuredValue previousValue)
+        public bool CheckConditionValueDeadBandDeltaIsMet(MeasuredValue currentValue, MeasuredValue previousValue)
         {
             Contract.Requires<ArgumentNullException>(currentValue != null);
             Contract.Requires<ArgumentNullException>(previousValue != null);
-            if (ValueDeadBandPercent == 0) {
-                _logger.DebugFormat("ValueDeadBandPercentIsMet: ValueDeadBandPercent = {0}", ValueDeadBandPercent);
+            if (ValueDeadBandDelta == 0) {
+                _logger.DebugFormat("ValueDeadBandPercentIsMet: ValueDeadBandPercent = {0}", ValueDeadBandDelta);
                 return true;
             }
             bool equal = currentValue.Value.ToString() == previousValue.Value.ToString();
@@ -227,17 +229,17 @@ namespace TK.TimeSeries.Core
                 value1 = result;
             }
             result = Math.Abs(value2 - value1);
-            result = value2 == 0 ? result / value1 : result / value2;
-            result = Math.Abs(result);
-            _logger.DebugFormat("ValueDeadBandPercentIsMet: {0} Result: {1} %: {2}", result > ValueDeadBandPercent, result, ValueDeadBandPercent);
-            return result > ValueDeadBandPercent;
+            //result = value2 == 0 ? result / value1 : result / value2;
+            //result = Math.Abs(result);
+            _logger.DebugFormat("ValueDeadBandDeltaIsMet: {0} Result: {1} %: {2}", result > ValueDeadBandDelta, result, ValueDeadBandDelta);
+            return result > ValueDeadBandDelta;
         }
 
         public override string ToString()
         {
             return string.Format("TimeDeadBand: {0} ValueDeadBand: {1}%  RewriteValueAfter: {2}",
                 this.TimeDeadBand,
-                this.ValueDeadBandPercent,
+                this.ValueDeadBandDelta,
                 this.RewriteValueAfter);
         }
 

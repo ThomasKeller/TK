@@ -26,7 +26,7 @@ namespace TK.TimeSeries.Test.Core
         {
             var value = new CompressionConditionConfig() {
                 MeasuredValueName = "MyTag1",
-                ValueDeadBandPercent = 1,
+                ValueDeadBandDelta = 1,
             };
 
             // RewriteValueAfter = new TimeSpan(1, 0, 0),
