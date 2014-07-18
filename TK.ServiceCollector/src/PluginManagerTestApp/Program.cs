@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TK.PluginManager;
+using TK.Logging;
 
 namespace PluginTest
 {
@@ -10,6 +11,8 @@ namespace PluginTest
     {
         static void Main(string[] args)
         {
+            TK.Logging.ILogger logger = LoggerFactory.CreateLoggerFor("main");
+
             List<PluginConfiguration> configs = new List<PluginConfiguration>(PluginConfiguration.LoadPluginsConfig());
             var pluginLoader = new PluginLoader(AppDomain.CurrentDomain.BaseDirectory, "*Plugin.dll");
             foreach (string name in pluginLoader.PluginNames)

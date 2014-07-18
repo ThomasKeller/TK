@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PluginTest</RootNamespace>
     <AssemblyName>PluginTest</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -55,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WebPageParserPlugin\WebPageParserPlugin.csproj">
+      <Project>{c9353d3a-547f-4569-b71d-93b2238fb401}</Project>
+      <Name>WebPageParserPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KostalPlugin\KostalPlugin.csproj">
       <Project>{21018F28-3727-44C1-A0AE-BB604A73FB11}</Project>
       <Name>KostalPlugin</Name>
@@ -63,12 +69,19 @@
       <Project>{f5fa8f3a-7f12-42c7-85eb-c883cd854aad}</Project>
       <Name>PluginManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TimeSeriesPlugin\TimeSeriesPlugin.csproj">
+      <Project>{222a5691-e3e4-4de3-b1fd-b6a53dc1c6f2}</Project>
+      <Name>TimeSeriesPlugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CompressionConfigs.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="log4Net.def" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

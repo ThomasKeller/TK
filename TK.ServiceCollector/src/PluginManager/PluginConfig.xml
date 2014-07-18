@@ -1,8 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Plugins>
-  <Plugin Name="KostalPlugin">
-    <Paramter Name="URL">http://192.168.111.34</Paramter>
-    <Paramter Name="User">pvserver</Paramter>
-    <Paramter Name="Password">geheim1</Paramter>
-  </Plugin>
+
+	<Plugin Name="KostalPlugin">
+	    <Paramter Name="URL">http://192.168.111.34</Paramter>
+		<Paramter Name="User">pvserver</Paramter>
+		<Paramter Name="Password">EMsiWgsus63pv</Paramter>
+		<Paramter Name="CronJob">0/60 * * * * ?</Paramter>
+	</Plugin>
+
+	<Plugin Name="WebPageParserPlugin">
+		<Paramter Name="UrlSolarWetter">http://www.vorhersage-plz-bereich.solar-wetter.com/html/410.html</Paramter>
+		<Paramter Name="CronJob">0 0 5,9,13,17 * * ?</Paramter>
+	</Plugin>
+
+	<Plugin Name="TimeSeriesPlugin">
+		<Paramter Name="MessageQueuePaths">.\Private$\KostalValues;.\Private$\webpagevalues</Paramter>
+		<Paramter Name="CronJob">0/60 * * * * ?</Paramter>
+	</Plugin>
+	
 </Plugins>

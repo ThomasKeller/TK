@@ -50,7 +50,7 @@ namespace TK.PluginManager
 			catch(Exception e)
 			{
                 m_Logger.Fatal(e.Message, e);
-                throw;
+                throw e;
 			}
 			return list;
 		}
