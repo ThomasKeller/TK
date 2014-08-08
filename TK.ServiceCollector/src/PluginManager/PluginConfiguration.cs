@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using TK.Logging;
 
 namespace TK.PluginManager
 {
@@ -11,7 +12,7 @@ namespace TK.PluginManager
     /// </summary>
     public class PluginConfiguration
     {
-        private static readonly TK.Logging.ILogger m_Logger = TK.Logging.LoggerFactory.CreateLoggerFor(typeof(PluginConfiguration));
+        private static readonly ILogger _Logger = TK.Logging.LoggerFactory.CreateLoggerFor(typeof(PluginConfiguration));
         private readonly Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
 
         public string PluginName { get; set; }
@@ -19,7 +20,7 @@ namespace TK.PluginManager
         
         public static IEnumerable<PluginConfiguration> LoadPluginsConfig(string configFile = "PluginConfig.xml")
 		{
-            m_Logger.Debug(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+            _Logger.Debug(System.Reflection.MethodBase.GetCurrentMethod().ToString());
             List<PluginConfiguration> list = new List<PluginConfiguration>();
 			try
 			{
@@ -49,7 +50,7 @@ namespace TK.PluginManager
 			}
 			catch(Exception e)
 			{
-                m_Logger.Fatal(e.Message, e);
+                _Logger.Fatal(e.Message, e);
                 throw e;
 			}
 			return list;

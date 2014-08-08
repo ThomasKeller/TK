@@ -76,7 +76,7 @@ namespace TK.KostalPlugin
 
         private static string LoadWebPage(string url, string user, string password)
         {
-            Console.WriteLine(string.Format("Read Value from Kostal Web Server - {0} {1}",
+            Console.WriteLine(string.Format("Read Value from Kostal - {0} ThreadId: {1}",
                 System.DateTime.Now.ToString("r"),
                 System.Threading.Thread.CurrentThread.ManagedThreadId));
             return WebPagerReader.Download(url, user, password);

@@ -22,7 +22,7 @@ namespace TK.KostalPlugin
             defaultParameter.Add("URL", Url);
             defaultParameter.Add("User", User);
             defaultParameter.Add("Password", Password);
-            defaultParameter.Add("CronJobText", m_CronJobText);
+            defaultParameter.Add("CronJobText", _CronJobText);
             return defaultParameter;
         }
 
@@ -31,7 +31,7 @@ namespace TK.KostalPlugin
             Url = initParams.ContainsKey("URL") ? initParams["URL"] : "http://192.168.111.34";
             User = initParams.ContainsKey("User") ? initParams["User"] : "pvserver";
             Password = initParams.ContainsKey("Password") ? initParams["Password"] : "geheim";
-            m_CronJobText = initParams.ContainsKey("CronJob") ? initParams["CronJob"] : "0/60 * * * * ?";
+            _CronJobText = initParams.ContainsKey("CronJob") ? initParams["CronJob"] : "0/60 * * * * ?";
             InitializeJob();
         }
 
@@ -47,17 +47,17 @@ namespace TK.KostalPlugin
 
         protected override void InitializeJob()
         {
-            m_JobDetail = JobBuilder.Create<KostalJob>()
+            _JobDetail = JobBuilder.Create<KostalJob>()
                                     .Build();
-            m_JobDetail.JobDataMap.Add("URL", Url);
-            m_JobDetail.JobDataMap.Add("User", User);
-            m_JobDetail.JobDataMap.Add("Password", Password);
+            _JobDetail.JobDataMap.Add("URL", Url);
+            _JobDetail.JobDataMap.Add("User", User);
+            _JobDetail.JobDataMap.Add("Password", Password);
 
             var trigger = TriggerBuilder.Create()
-                            .WithCronSchedule(m_CronJobText) //"0 23 15,16,17 ? * *")
+                            .WithCronSchedule(_CronJobText) //"0 23 15,16,17 ? * *")
                             .Build();
 
-            m_Scheduler.ScheduleJob(m_JobDetail, trigger);
+            _Scheduler.ScheduleJob(_JobDetail, trigger);
         }
     }
 }

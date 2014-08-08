@@ -4,24 +4,23 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using TK.Logging;
+using Common.Logging;
 
 namespace TK.PluginManager
 {
     public class PluginLoader
     {
-        private static ILogger _logger = LoggerFactory.CreateLoggerFor(typeof(PluginLoader));
-
+        private static ILog _Logger = LogManager.GetCurrentClassLogger();
         private Dictionary<string, PluginBase> _PluginBaseCollection;
 
         static PluginLoader()
         {
-            _logger.Debug(MethodBase.GetCurrentMethod().Name);
+            _Logger.Debug(MethodBase.GetCurrentMethod().Name);
         }
 
         public PluginLoader(string searchPath, string searchPattern)
         {
-            _logger.Debug(MethodBase.GetCurrentMethod().Name);
+            _Logger.Debug(MethodBase.GetCurrentMethod().Name);
             SearchForPluginAssemblies(searchPath, searchPattern);
         }
 
@@ -37,7 +36,7 @@ namespace TK.PluginManager
 
         private void SearchForPluginAssemblies(string pluginSearchPath, string searchPattern)
         {
-            _logger.InfoFormat("{0} Directory: '{1} Pattern: {2}", MethodBase.GetCurrentMethod().Name, pluginSearchPath, searchPattern);
+            _Logger.InfoFormat("{0} Directory: '{1} Pattern: {2}", MethodBase.GetCurrentMethod().Name, pluginSearchPath, searchPattern);
             _PluginBaseCollection = new Dictionary<string ,PluginBase>();
             string directoryPath = Path.GetDirectoryName(pluginSearchPath);
             if (directoryPath == null) return;
@@ -68,13 +67,13 @@ namespace TK.PluginManager
                         pluginBase = Activator.CreateInstance(type) as PluginBase;
                     }
                     if (pluginBase == null) continue;
-                    _logger.InfoFormat("{0}  Plugin Name: {1}", MethodBase.GetCurrentMethod().Name, pluginBase.PluginName());
+                    _Logger.InfoFormat("{0}  Plugin Name: {1}", MethodBase.GetCurrentMethod().Name, pluginBase.PluginName());
                     _PluginBaseCollection.Add(pluginBase.PluginName(), pluginBase);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex.Message);
+                _Logger.Error(ex.Message);
             }
         }
     }

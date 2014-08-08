@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CompressionConditionConfigs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="TimeSeries">
+
+	<CompressionCondition>
+		<TagName>Tag1</TagName>
+		<ValueDeadBandDelta>1.2</ValueDeadBandDelta>
+		<TimeDeadBand Hours="0" Minutes="0" Seconds="10" />
+		<RewriteValueAfter Hours="1" Minutes="0" Seconds="0" />
+	</CompressionCondition>
+
+	<CompressionCondition>
+		<TagName>Tag2</TagName>
+		<ValueDeadBandDelta>1.2</ValueDeadBandDelta>
+		<TimeDeadBand Hours="0" Minutes="0" Seconds="10" />
+		<RewriteValueAfter Hours="1" Minutes="0" Seconds="0" />
+	</CompressionCondition>
+
+</CompressionConditionConfigs>

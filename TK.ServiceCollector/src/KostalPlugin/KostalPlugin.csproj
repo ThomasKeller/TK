@@ -34,11 +34,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="Common.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
@@ -51,8 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TK.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="TK.Logger">
       <HintPath>..\..\packages\TK.Logger.1.0.0.0\lib\net40\TK.Logger.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -62,17 +64,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MessageQueue\MessageQueue.csproj">
-      <Project>{695879fc-154e-4235-8f95-9fb9d192947d}</Project>
+    <ProjectReference Include="..\MessageQueue\MessageQueue.csproj">
+      <Project>{8b7b9c83-309e-47b7-8bb8-3e99f4acc39a}</Project>
       <Name>MessageQueue</Name>
     </ProjectReference>
     <ProjectReference Include="..\PluginManager\PluginManager.csproj">
       <Project>{F5FA8F3A-7F12-42C7-85EB-C883CD854AAD}</Project>
       <Name>PluginManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebPageParser\TK.WebPageParser.csproj">
-      <Project>{817e343b-97a6-4efd-a033-b2fe66d1c9c5}</Project>
-      <Name>TK.WebPageParser</Name>
+    <ProjectReference Include="..\WebPageParser\WebPageParser.csproj">
+      <Project>{e1868d96-8d72-4325-a08c-84a9bf514006}</Project>
+      <Name>WebPageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

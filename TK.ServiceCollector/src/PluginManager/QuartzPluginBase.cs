@@ -10,9 +10,9 @@ namespace TK.PluginManager
     /// </summary>
     public abstract class QuartzPluginBase : PluginBase
     {
-        protected readonly IScheduler m_Scheduler = new StdSchedulerFactory().GetScheduler();
-        protected string m_CronJobText = string.Empty;
-        protected IJobDetail m_JobDetail = null;
+        protected readonly IScheduler _Scheduler = new StdSchedulerFactory().GetScheduler();
+        protected string _CronJobText = string.Empty;
+        protected IJobDetail _JobDetail = null;
 
         /// <summary>
         /// Create this methods in the derived class
@@ -26,34 +26,39 @@ namespace TK.PluginManager
 
         public override void Start()
         {
-            if (m_Scheduler.IsStarted)
+            if (_Scheduler.IsStarted)
             {
                 return;
             }
-            if (m_JobDetail == null)
+            if (_JobDetail == null)
             {
                 throw new Exception("Call InitializeJob first");
             }
-            if (string.IsNullOrEmpty(m_CronJobText))
+            if (string.IsNullOrEmpty(_CronJobText))
             {
                 throw new Exception("Set a valid CronJobText");
             }
-            m_Scheduler.Start();
+            _Scheduler.Start();
         }
 
         public override void Pause()
         {
-            m_Scheduler.PauseAll();
+            _Scheduler.PauseAll();
         }
 
         public override void Resume()
         {
-            m_Scheduler.ResumeAll();
+            _Scheduler.ResumeAll();
         }
 
         public override void Stop()
         {
-            m_Scheduler.Shutdown(true);
+            _Scheduler.Shutdown(true);
+        }
+
+        public void ForceStop()
+        {
+            _Scheduler.Shutdown(false);
         }
     }
 }
