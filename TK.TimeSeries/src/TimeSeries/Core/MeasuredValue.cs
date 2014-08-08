@@ -14,9 +14,13 @@ namespace TK.TimeSeries.Core
         #region Properties
 
         public string Name { get; set; }
+
         public DateTime TimeStamp { get; set; }
+
         public OPCQuality Quality { get { return GetQuality(); } set { _quality = value; } }
+
         public object Value { get { return _value; } set { _value = value; } }
+
         public string Description { get; set; }
 
         #endregion Properties

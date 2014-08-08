@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SqlServerCe;
 using System.Data;
 using System.Data.SqlClient;
-using TK.Logging;
+using System.Data.SqlServerCe;
 using System.Diagnostics.CodeAnalysis;
+using TK.Logging;
 
 namespace TK.TimeSeries.Persistence
 {
@@ -17,7 +14,7 @@ namespace TK.TimeSeries.Persistence
         private static readonly object _lockRemote = new object();
         private static SqlCeConnection _sqlCeConnection;
         private static SqlConnection _sqlConnection;
-        
+
         public static void InitSqlCeConnection(string connectionString)
         {
             _logger.DebugFormat("Connection: {0}", connectionString);

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlServerCe;
 using System.Diagnostics.Contracts;
-using TK.TimeSeries.Core;
 using TK.Logging;
+using TK.TimeSeries.Core;
 
 namespace TK.TimeSeries.Persistence
 {
@@ -20,7 +20,7 @@ namespace TK.TimeSeries.Persistence
 
         /// <summary>
         /// Reads the last measured value from the local database.
-        /// If there is no value found a instance of MeasuredValue with an 
+        /// If there is no value found a instance of MeasuredValue with an
         /// OPCQuality of OPCQuality.NoValue is returned.
         /// </summary>
         /// <param name="valueName">name of the measured value (tag name)</param>
@@ -36,10 +36,13 @@ namespace TK.TimeSeries.Persistence
                           " (SELECT max(MeasuredDate) FROM {0} WHERE Name = @Name)";
             sql = string.Format(sql, GetTableNameFor(typeCode));
 
-            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection())) {
+            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection()))
+            {
                 command.Parameters.AddWithValue("Name", valueName);
-                using(SqlCeDataReader sr =  command.ExecuteReader(System.Data.CommandBehavior.SingleRow)) {
-                    if (sr.Read()) {
+                using (SqlCeDataReader sr = command.ExecuteReader(System.Data.CommandBehavior.SingleRow))
+                {
+                    if (sr.Read())
+                    {
                         value.Name = (string)sr["Name"];
                         value.TimeStamp = (DateTime)sr["MeasuredDate"];
                         value.Value = sr["Value"];
@@ -62,7 +65,7 @@ namespace TK.TimeSeries.Persistence
         public static int SaveValueWhenConditionsAreMet(MeasuredValue currentValue, CompressionCondition condition)
         {
             Contract.Requires(currentValue != null);
-            
+
             // if the current value has the OPCQuality of "NoValue"
             // return without writting the value
             if (currentValue.Quality == OPCQuality.NoValue)
@@ -84,13 +87,14 @@ namespace TK.TimeSeries.Persistence
         {
             if (currentValue == null)
                 return 0;
-            
+
             string sql = "INSERT INTO {0} (Name, MeasuredDate, Value, Quality, Remark) " +
                           "values(@Name, @MeasuredDate, @Value, @Quality, @Remark);";
             sql = string.Format(sql, GetTableNameFor(typeCode));
 
             int rowAffected = 0;
-            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection())) {
+            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection()))
+            {
                 command.Parameters.AddWithValue("Name", currentValue.Name);
                 command.Parameters.AddWithValue("MeasuredDate", currentValue.TimeStamp);
                 command.Parameters.AddWithValue("Value", currentValue.Value);
@@ -104,7 +108,7 @@ namespace TK.TimeSeries.Persistence
         }
 
         /// <summary>
-        /// Transfer all measured values to the remote database that 
+        /// Transfer all measured values to the remote database that
         /// are not there.
         /// </summary>
         public static void TransferDataToDestDB()
@@ -123,9 +127,12 @@ namespace TK.TimeSeries.Persistence
                          "FROM {0} " +
                          "GROUP BY Name";
             sql = string.Format(sql, GetTableNameFor(typeCode));
-            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection())) {
-                using (SqlCeDataReader sr = command.ExecuteReader()) {
-                    while (sr.Read()) {
+            using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection()))
+            {
+                using (SqlCeDataReader sr = command.ExecuteReader())
+                {
+                    while (sr.Read())
+                    {
                         dic.Add(
                             (string)sr["Name"],
                             (DateTime)sr["MaxMeasuredDate"]);
@@ -143,9 +150,12 @@ namespace TK.TimeSeries.Persistence
                          "FROM {0} " +
                          "GROUP BY Name";
             sql = string.Format(sql, GetTableNameFor(typeCode));
-            using (var command = new SqlCommand(sql, DataBaseConnection.GetSqlConnection())) {
-                using (SqlDataReader sr = command.ExecuteReader()) {
-                    while (sr.Read()) {
+            using (var command = new SqlCommand(sql, DataBaseConnection.GetSqlConnection()))
+            {
+                using (SqlDataReader sr = command.ExecuteReader())
+                {
+                    while (sr.Read())
+                    {
                         dic.Add(
                             (string)sr["Name"],
                             (DateTime)sr["MaxMeasuredDate"]);
@@ -157,7 +167,8 @@ namespace TK.TimeSeries.Persistence
 
         private static string GetTableNameFor(TypeCode typeCode)
         {
-            switch (typeCode) {
+            switch (typeCode)
+            {
                 case TypeCode.Byte:
                 case TypeCode.Char:
                 case TypeCode.DBNull:
@@ -172,8 +183,10 @@ namespace TK.TimeSeries.Persistence
                     throw new Exception("not implemented");
                 case TypeCode.Boolean:
                     return "BoolValues";
+
                 case TypeCode.Double:
                     return "DoubleValues";
+
                 case TypeCode.Single:
                     throw new Exception("not implemented: use Double");
                 case TypeCode.Int16:
@@ -193,32 +206,39 @@ namespace TK.TimeSeries.Persistence
         {
             var sourceElements = ReadLastMeasuredDatesFromLocalDB(typeCode);
             var destElements = ReadLastMeasuredDatesFromDestDB(typeCode);
-            var syncElements = new Dictionary<string,DateTime>();
+            var syncElements = new Dictionary<string, DateTime>();
 
-            foreach (var sourceElement in sourceElements) {
-                if (destElements.ContainsKey(sourceElement.Key)) {
-                    if (sourceElement.Value > destElements[sourceElement.Key]) {
-                        syncElements.Add(sourceElement.Key, destElements[sourceElement.Key]);    
+            foreach (var sourceElement in sourceElements)
+            {
+                if (destElements.ContainsKey(sourceElement.Key))
+                {
+                    if (sourceElement.Value > destElements[sourceElement.Key])
+                    {
+                        syncElements.Add(sourceElement.Key, destElements[sourceElement.Key]);
                     }
                 }
-                else {
+                else
+                {
                     // destination doesn't contain the tagname
                     // therefore we copy all tags of that name
                     syncElements.Add(sourceElement.Key, new DateTime(2013, 01, 01));
                 }
             }
 
-            foreach (var syncElement in syncElements) {
+            foreach (var syncElement in syncElements)
+            {
                 string sql = "SELECT MeasuredDate, Name, Value, Quality, Remark FROM {0} " +
                              "WHERE Name = @Name AND MeasuredDate > @MeasureDate";
                 sql = string.Format(sql, GetTableNameFor(typeCode));
-                using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection())) {
-                    command.Parameters.AddWithValue("Name", syncElement.Key); 
+                using (var command = new SqlCeCommand(sql, DataBaseConnection.GetSqlCeConnection()))
+                {
+                    command.Parameters.AddWithValue("Name", syncElement.Key);
                     command.Parameters.AddWithValue("MeasureDate", syncElement.Value);
-                    using (SqlCeDataReader sr = command.ExecuteReader()) {
-
+                    using (SqlCeDataReader sr = command.ExecuteReader())
+                    {
                         using (var sqlBulkCopy = new SqlBulkCopy(
-                            DataBaseConnection.GetSqlConnection())) {
+                            DataBaseConnection.GetSqlConnection()))
+                        {
                             sqlBulkCopy.DestinationTableName = GetTableNameFor(typeCode);
                             _logger.DebugFormat("BulkCopy: {0}", sqlBulkCopy.DestinationTableName);
                             sqlBulkCopy.WriteToServer(sr);

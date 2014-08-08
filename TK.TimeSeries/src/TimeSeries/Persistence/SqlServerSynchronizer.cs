@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TK.Logging;
 using System.Threading;
-using TK.TimeSeries.Core;
+using TK.Logging;
 
 namespace TK.TimeSeries.Persistence
 {
@@ -30,9 +26,9 @@ namespace TK.TimeSeries.Persistence
             if (_thread != null)
             {
                 _thread.Abort();
-                while(_thread.IsAlive)
+                while (_thread.IsAlive)
                 {
-                    Thread.Sleep(100);   
+                    Thread.Sleep(100);
                 }
                 _thread = null;
             }
