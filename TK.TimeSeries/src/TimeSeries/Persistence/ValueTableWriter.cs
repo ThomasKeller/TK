@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlServerCe;
-using System.Diagnostics.Contracts;
 using TK.Logging;
 using TK.TimeSeries.Core;
 
@@ -29,7 +28,11 @@ namespace TK.TimeSeries.Persistence
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static MeasuredValue ReadLastMeasuredValueFromLocalDB(string valueName, TypeCode typeCode)
         {
-            Contract.Requires<ArgumentException>(false == string.IsNullOrEmpty(valueName));
+            if (string.IsNullOrEmpty(valueName))
+            {
+                throw new ArgumentNullException("valueName");
+            }
+
             MeasuredValue value = new MeasuredValue();
             string sql = "SELECT Name, MeasuredDate, Value, Quality, Remark FROM {0} " +
                           "WHERE Name = @Name AND MeasuredDate IN" +
@@ -64,7 +67,14 @@ namespace TK.TimeSeries.Persistence
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static int SaveValueWhenConditionsAreMet(MeasuredValue currentValue, CompressionCondition condition)
         {
-            Contract.Requires(currentValue != null);
+            if (currentValue == null)
+            {
+                throw new ArgumentNullException("currentValue");
+            }
+            if (condition == null)
+            {
+                throw new ArgumentNullException("condition");
+            }
 
             // if the current value has the OPCQuality of "NoValue"
             // return without writting the value
