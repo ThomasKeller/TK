@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics.Contracts;
 using System.Xml.Serialization;
 using System.IO;
 using TK.Logging;
@@ -24,20 +23,23 @@ namespace TK.TimeSeries.Core
 
         public CompressionConditionManager(CompressionConditionConfigs configs)
         {
-            Contract.Requires(configs != null);
-            Contract.Requires(configs.Items != null);
+            if (configs == null) { throw new ArgumentNullException("config"); }
+            if (configs.Items == null) { throw new ArgumentNullException("config.Items"); }
+
             AddRange(configs.Items);
         }
 
         public void Add(CompressionConditionConfig config)
         {
-            Contract.Requires(config != null);
+            if (config == null) { throw new ArgumentNullException("config"); } 
+
             _configItems.Add(config.MeasuredValueName, config);
         }
 
         public void AddRange(IEnumerable<CompressionConditionConfig> configs)
         {
-            Contract.Requires(configs != null);
+            if (configs == null) { throw new ArgumentNullException("configs"); } 
+
             foreach(var item in configs)
             {
                 if (false == _configItems.ContainsKey(item.MeasuredValueName)) {

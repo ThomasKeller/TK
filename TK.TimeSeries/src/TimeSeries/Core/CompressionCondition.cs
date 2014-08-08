@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using TK.Logging;
 using System.Text;
 
@@ -109,8 +108,8 @@ namespace TK.TimeSeries.Core
         /// <returns></returns>
         public bool ShouldCurrentValueBeWritten(MeasuredValue currentValue, MeasuredValue previousValue)
         {
-            Contract.Requires<ArgumentNullException>(currentValue != null);
-            Contract.Requires<ArgumentNullException>(previousValue != null);
+            if (currentValue == null) { throw new ArgumentNullException("currentValue"); }
+            if (previousValue == null) { throw new ArgumentNullException("previousValue"); }
 
             _logger.DebugFormat("Previous value: {0}", previousValue.ToString());
             _logger.DebugFormat("Current value:  {0}", currentValue.ToString());
@@ -158,8 +157,9 @@ namespace TK.TimeSeries.Core
         /// <returns></returns>
         public bool CheckConditionRewriteValueAfterIsMet(MeasuredValue currentValue, MeasuredValue previousValue)
         {
-            Contract.Requires<ArgumentNullException>(currentValue != null);
-            Contract.Requires<ArgumentNullException>(previousValue != null);
+            if (currentValue == null) { throw new ArgumentNullException("currentValue"); }
+            if (previousValue == null) { throw new ArgumentNullException("previousValue"); }
+
             TimeSpan sp = currentValue.TimeStamp - previousValue.TimeStamp;
             if (RewriteValueAfter.TotalSeconds < sp.TotalSeconds) {
                 _logger.DebugFormat("RewriteValueAfterIsMet: {0} < {1}", RewriteValueAfter.TotalSeconds, sp.TotalSeconds);
@@ -178,8 +178,8 @@ namespace TK.TimeSeries.Core
         /// <returns></returns>
         public bool CheckConditionTimeDeadBandIsMet(MeasuredValue currentValue, MeasuredValue previousValue)
         {
-            Contract.Requires<ArgumentNullException>(currentValue != null, "paramter currentValue should not be null");
-            Contract.Requires<ArgumentNullException>(previousValue != null, "paramter previousValue should not be null");
+            if (currentValue == null) { throw new ArgumentNullException("currentValue"); }
+            if (previousValue == null) { throw new ArgumentNullException("previousValue"); }
             TimeSpan sp = currentValue.TimeStamp - previousValue.TimeStamp;
             if (sp.TotalSeconds > TimeDeadBand.TotalSeconds) {
                 _logger.DebugFormat("TimeDeadBandIsMet: {0} > {1}", sp.TotalSeconds, TimeDeadBand.TotalSeconds);
@@ -199,8 +199,8 @@ namespace TK.TimeSeries.Core
         /// <returns></returns>
         public bool CheckConditionValueDeadBandDeltaIsMet(MeasuredValue currentValue, MeasuredValue previousValue)
         {
-            Contract.Requires<ArgumentNullException>(currentValue != null);
-            Contract.Requires<ArgumentNullException>(previousValue != null);
+            if (currentValue == null) { throw new ArgumentNullException("currentValue"); }
+            if (previousValue == null) { throw new ArgumentNullException("previousValue"); }
             if (ValueDeadBandDelta == 0) {
                 _logger.DebugFormat("ValueDeadBandPercentIsMet: ValueDeadBandPercent = {0}", ValueDeadBandDelta);
                 return true;
@@ -229,8 +229,6 @@ namespace TK.TimeSeries.Core
                 value1 = result;
             }
             result = Math.Abs(value2 - value1);
-            //result = value2 == 0 ? result / value1 : result / value2;
-            //result = Math.Abs(result);
             _logger.DebugFormat("ValueDeadBandDeltaIsMet: {0} Result: {1} %: {2}", result > ValueDeadBandDelta, result, ValueDeadBandDelta);
             return result > ValueDeadBandDelta;
         }

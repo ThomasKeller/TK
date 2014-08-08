@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-using System.Diagnostics.Contracts;
 
 namespace TK.TimeSeries.Core
 {
@@ -24,12 +23,13 @@ namespace TK.TimeSeries.Core
             RewriteValueAfter = new TimeSpanConfig();
         }
         
-        public void SetTimeDeadBand(TimeSpan sp)
+        public void SetTimeDeadBand(TimeSpan timeDeadBand)
         {
-            Contract.Requires<ArgumentNullException>(TimeDeadBand != null, "parameter TimeDeadBand should not be null");
-            TimeDeadBand.Hours = sp.Hours;
-            TimeDeadBand.Minutes = sp.Minutes;
-            TimeDeadBand.Seconds = sp.Seconds;
+            if (timeDeadBand == null) { throw new ArgumentNullException("timeDeadBand"); }
+
+            TimeDeadBand.Hours = timeDeadBand.Hours;
+            TimeDeadBand.Minutes = timeDeadBand.Minutes;
+            TimeDeadBand.Seconds = timeDeadBand.Seconds;
         }
 
         public TimeSpan GetTimeDeadBand()
@@ -37,12 +37,13 @@ namespace TK.TimeSeries.Core
             return new TimeSpan(TimeDeadBand.Hours, TimeDeadBand.Minutes, TimeDeadBand.Seconds);
         }
 
-        public void SetRewriteValueAfter(TimeSpan sp)
+        public void SetRewriteValueAfter(TimeSpan rewriteValueAfter)
         {
-            Contract.Requires<ArgumentNullException>(RewriteValueAfter != null, "parameter RewriteValueAfter should not be null");
-            RewriteValueAfter.Hours = sp.Hours;
-            RewriteValueAfter.Minutes = sp.Minutes;
-            RewriteValueAfter.Seconds = sp.Seconds;
+            if (rewriteValueAfter == null) { throw new ArgumentNullException("rewriteValueAfter"); }
+
+            RewriteValueAfter.Hours = rewriteValueAfter.Hours;
+            RewriteValueAfter.Minutes = rewriteValueAfter.Minutes;
+            RewriteValueAfter.Seconds = rewriteValueAfter.Seconds;
         }
 
         public TimeSpan GetRewriteValueAfter()
@@ -59,16 +60,4 @@ namespace TK.TimeSeries.Core
             };
         }
     }
-
-    [Serializable]
-    public class TimeSpanConfig
-    {
-        [XmlAttribute]
-        public int Hours { get; set; }
-        [XmlAttribute]
-        public int Minutes { get; set; }
-        [XmlAttribute]
-        public int Seconds { get; set; }
-    }
-
 }
