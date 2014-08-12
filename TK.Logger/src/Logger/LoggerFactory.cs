@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using TK.Logging.Log4Net;
 using TK.Logging.DebugLogger;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace TK.Logging
 {
@@ -61,6 +63,25 @@ namespace TK.Logging
             }
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static ILogger GetCurrentClassLogger()
+        {
+            var frame = new StackFrame(1, false);
+            var method = frame.GetMethod();
+            MethodBase upperMethod = method;
+            for(var offset = 2; ; offset++)
+            {
+                if((upperMethod == null) || !upperMethod.IsConstructor)
+                {
+                    break;
+                }
+                method = upperMethod;
+                upperMethod = new StackFrame(offset, false).GetMethod();
+            }
+            var declaringType = method.DeclaringType;
+            return CreateLoggerFor(declaringType);
+        }
+
         public static ILogger CreateLoggerFor(string typeName)
         {
             return _logFactory.For(typeName);
@@ -69,6 +90,12 @@ namespace TK.Logging
         public static ILogger CreateLoggerFor(Type type)
         {
             return _logFactory.For(type);
+        }
+
+        public static ILogger CreateLoggerFor<T>()
+        {
+            return CreateLoggerFor(typeof(T));
+            
         }
     }
 }

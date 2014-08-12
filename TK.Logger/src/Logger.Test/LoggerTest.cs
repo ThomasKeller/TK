@@ -35,8 +35,12 @@ namespace TK.LoggerTest
             logger.Fatal("FatalMsg 2", new Exception("Fatal Exception"));
             logger.FatalFormat("{0} {1} {2}", 1, 2, 3);
         }
-        
 
-
+        [Test]
+        public void CreateDefaultLogger()
+        {
+            var logger = LoggerFactory.CreateLoggerFor<LoggerTest>();
+            var logger2 = LoggerFactory.GetCurrentClassLogger();
+        }
     }
 }
