@@ -38,12 +38,6 @@
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="TK.Logger">
       <HintPath>..\..\packages\TK.Logger.1.1.0.0\lib\net40\TK.Logger.dll</HintPath>
     </Reference>
@@ -54,10 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MessageQueue\MessageQueue.csproj">
-      <Project>{8b7b9c83-309e-47b7-8bb8-3e99f4acc39a}</Project>
-      <Name>MessageQueue</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PluginManager\PluginManager.csproj">
       <Project>{F5FA8F3A-7F12-42C7-85EB-C883CD854AAD}</Project>
       <Name>PluginManager</Name>

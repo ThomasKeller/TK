@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Reflection;
 using TK.Logging;
 using TK.PluginManager;
-using TK.SimpleMessageQueue;
 using TK.WebPageParser;
 
 namespace TK.KostalPlugin
 {
     public class KostalPlugin : SchedulePluginBase
     {
-        private static readonly ILogger _Logger = TK.Logging.LoggerFactory.CreateLoggerFor(typeof(PluginConfiguration));
-
         private const string c_PluginName = @"KostalPlugin";
-        private const string c_QueuePath = @".\Private$\KostalValues2";
+        private const string c_QueuePath = @".\Private$\KostalPlugIn";
 
-        private SimpleMessageQueueWrapper<IDictionary<string, object>> _Queue;
+        private static readonly ILogger _Logger = LoggerFactory.GetCurrentClassLogger();
+
         public string Url { get; private set; }
+
         public string User { get; private set; }
+
         public string Password { get; private set; }
+
         public string CronJobText { get; private set; }
 
         public override Dictionary<string, object> GetParameters()
@@ -44,6 +45,8 @@ namespace TK.KostalPlugin
             parameters.Add("Password", Password);
 
             _Scheduler.AddJob(CronJobText, Execute, parameters, false);
+
+            InitQueue(c_QueuePath, c_PluginName);
         }
 
         public override string PluginName()
@@ -61,8 +64,8 @@ namespace TK.KostalPlugin
             try
             {
                 _Logger.DebugFormat("Execute KostalJob. Thread ID: {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
-                InitializeQueue();
                 var result = ParseKostalWebPage(parameters);
+                result.PluginName = c_PluginName;
                 SendToQueue(result);
                 _Logger.DebugFormat("KostalJob Completed. Thread ID: {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
             }
@@ -72,7 +75,7 @@ namespace TK.KostalPlugin
             }
         }
 
-        private static IDictionary<string, object> ParseKostalWebPage(IDictionary<string, object> parameters)
+        private static MeasureValueBox ParseKostalWebPage(IDictionary<string, object> parameters)
         {
             _Logger.DebugFormat("Read Value from Kostal - {0} ThreadId: {1}",
                         System.DateTime.Now.ToString("r"),
@@ -88,36 +91,6 @@ namespace TK.KostalPlugin
             }
             _Logger.Error("Web Page is emtpy");
             return null;
-        }
-
-        private void InitializeQueue()
-        {
-            try
-            {
-                if (_Queue == null)
-                {
-                    _Logger.Debug("Create new Queue");
-                    _Queue = new SimpleMessageQueueWrapper<IDictionary<string, object>>() { MessageLabel = "Kostal" };
-                    _Queue.Initialize(c_QueuePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                _Logger.FatalFormat("Failed to initialize queue: {0}", ex.Message);
-                _Queue = null;
-            }
-        }
-
-        private void SendToQueue(IDictionary<string, object> result)
-        {
-            if (result != null)
-            {
-                _Queue.Send(result);
-            }
-            else
-            {
-                /// ToDO: store data somewhere
-            }
         }
     }
 }

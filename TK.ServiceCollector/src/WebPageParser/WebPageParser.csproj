@@ -37,15 +37,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="TK.Logger">
-      <HintPath>..\..\packages\TK.Logger.1.0.0.0\lib\net40\TK.Logger.dll</HintPath>
+      <HintPath>..\..\packages\TK.Logger.1.1.0.0\lib\net40\TK.Logger.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArrayParser.cs" />
     <Compile Include="ArrayParserConvertType.cs" />
-    <Compile Include="KostalWebPageParser.cs" />
-    <Compile Include="SolarWetterWebPageParser.cs" />
     <Compile Include="WebPagerReader.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TK.PluginManager;
 using TK.WebPageParser;
 
 namespace TK.KostalPlugin
 {
     public class KostalWebPageParser
     {
-        public static IDictionary<string, object> Parse(string webPage)
+        public static MeasureValueBox Parse(string webPage)
         {
-            SortedDictionary<string, object> result = new SortedDictionary<string, object>();
+            var result = new SortedDictionary<string, object>();
+            var measuredValueBox = new MeasureValueBox() {
+                MeasuredUtcTime = DateTime.UtcNow,
+                PluginName = "Kostal"
+            };
+
             ArrayParser arrayParser = new ArrayParser(WebPagerReader.SelectAllElementsOfName(webPage, "td").ToArray());
             result.Add("PV.MeasureTime", DateTime.Now);
             string typeAndName = arrayParser.MoveToNextElementNotEmpty(0, true);
-            string[] parseName = typeAndName.Split(new char[]
-			{
-				'\n'
-			});
+            string[] parseName = typeAndName.Split('\n');
             string piko = string.Empty;
             string name = string.Empty;
             if (parseName.Length == 3)
@@ -40,7 +43,8 @@ namespace TK.KostalPlugin
             result.Add("PV.L2Power", ArrayParser.ConvertToInt(arrayParser.SearchForExactElement("Leistung", 1, true)));
             result.Add("PV.L3Voltage", ArrayParser.ConvertToInt(arrayParser.SearchForExactElement("Spannung", 1, true)));
             result.Add("PV.L3Power", ArrayParser.ConvertToInt(arrayParser.SearchForExactElement("Leistung", 1, true)));
-            return result;
+            measuredValueBox.MeasuredValues = result;
+            return measuredValueBox;
         }
     }
 }

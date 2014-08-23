@@ -25,12 +25,16 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiskQueue">
+      <HintPath>..\..\..\lib\DiskQueue\DiskQueue.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Messaging" />
     <Reference Include="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleDiskQueueWrapper.cs" />
     <Compile Include="SimpleMessageQueueWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

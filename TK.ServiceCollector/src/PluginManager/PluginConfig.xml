@@ -8,6 +8,10 @@
 		<Paramter Name="CronJob">0/60 * * * * ?</Paramter>
 	</Plugin>
 
+	<Plugin Name="EMH-eHZ-Plugin">
+		<Paramter Name="ComPort">COM4</Paramter>
+	</Plugin>
+	
 	<Plugin Name="WebPageParserPlugin">
 		<Paramter Name="UrlSolarWetter">http://www.vorhersage-plz-bereich.solar-wetter.com/html/410.html</Paramter>
 		<Paramter Name="CronJob">0 0 5,9,13,17 * * ?</Paramter>
@@ -15,7 +19,7 @@
 
 	<Plugin Name="TimeSeriesPlugin">
 		<Paramter Name="MessageQueuePaths">.\Private$\KostalValues;.\Private$\webpagevalues</Paramter>
-		<Paramter Name="CronJob">0/60 * * * * ?</Paramter>
+		<Paramter Name="CronJob">0/1 * * * * ?</Paramter>
 	</Plugin>
 	
 </Plugins>

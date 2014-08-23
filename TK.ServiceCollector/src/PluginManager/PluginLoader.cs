@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using Common.Logging;
+using TK.Logging;
 
 namespace TK.PluginManager
 {
     public class PluginLoader
     {
-        private static ILog _Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger _Logger = LoggerFactory.CreateLoggerFor(typeof(PluginLoader));
         private Dictionary<string, PluginBase> _PluginBaseCollection;
 
         static PluginLoader()
@@ -58,14 +58,19 @@ namespace TK.PluginManager
                 foreach (var type in assembly.GetTypes())
                 {
                     PluginBase pluginBase = null;
-                    if (type.BaseType == typeof(QuartzPluginBase))
-                    {
-                        pluginBase = Activator.CreateInstance(type) as QuartzPluginBase;
-                    }
-                    else if (type.BaseType == typeof(PluginBase))
+                    //if (type.BaseType == typeof(QuartzPluginBase))
+                    //{
+                    //    pluginBase = Activator.CreateInstance(type) as QuartzPluginBase;
+                    //}else
+                    if (type.BaseType == typeof(PluginBase))
                     {
                         pluginBase = Activator.CreateInstance(type) as PluginBase;
                     }
+                    else if (type.BaseType == typeof(SchedulePluginBase))
+                    {
+                        pluginBase = Activator.CreateInstance(type) as SchedulePluginBase;
+                    }
+
                     if (pluginBase == null) continue;
                     _Logger.InfoFormat("{0}  Plugin Name: {1}", MethodBase.GetCurrentMethod().Name, pluginBase.PluginName());
                     _PluginBaseCollection.Add(pluginBase.PluginName(), pluginBase);
